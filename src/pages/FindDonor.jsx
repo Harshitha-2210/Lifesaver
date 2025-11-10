@@ -26,7 +26,6 @@ export default function FindDonor() {
   return (
     <div className="w-full min-h-[calc(100vh-70px)] flex flex-col items-center bg-gradient-to-r from-red-700 to-red-500 pt-24 px-6 pb-16">
 
-      {/* SEARCH FORM */}
       <form onSubmit={handleSearch} className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-3xl space-y-6">
         <h2 className="text-3xl font-bold text-red-600 text-center">Find Blood Donor</h2>
 
@@ -59,15 +58,11 @@ export default function FindDonor() {
         </button>
       </form>
 
-      {/* RESULTS SECTION */}
       <div className="w-full max-w-5xl mt-10">
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
-
             {filtered.map((donor, index) => (
               <div key={index} className="bg-white shadow-2xl rounded-2xl p-8 border border-red-300 flex flex-col md:flex-row gap-6">
-
-                {/* LEFT SIDE ICON */}
                 <div className="flex flex-col justify-center items-center bg-red-100 p-6 rounded-xl w-full md:w-1/3">
                   <img
                     src="https://cdn-icons-png.flaticon.com/512/3421/3421098.png"
@@ -77,41 +72,18 @@ export default function FindDonor() {
                   <h2 className="text-xl font-bold text-red-600 mt-3">{donor.bloodgroup}</h2>
                 </div>
 
-                {/* RIGHT SIDE DETAILS */}
                 <div className="w-full md:w-2/3 space-y-2 text-gray-800 text-lg">
-
                   <p><span className="font-bold">👤 Full Name:</span> {donor.fullname}</p>
                   <p><span className="font-bold">📱 Phone Number:</span> {donor.phone}</p>
                   <p><span className="font-bold">📍 City/Area:</span> {donor.city}</p>
-                  <p><span className="font-bold">🚑 Emergency Contact:</span> {donor.emergency}</p>
-                  <p><span className="font-bold">🩸 Last Donation:</span> {donor.lastDonation || "N/A"}</p>
-                  <p><span className="font-bold">✅ Availability:</span> {donor.availability}</p>
 
                   {donor.medical && (
                     <p><span className="font-bold">⚕ Medical Notes:</span> {donor.medical}</p>
                   )}
 
-                  <div className="flex gap-4 pt-4">
-                    <a
-                      href={`tel:${donor.phone}`}
-                      className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-all"
-                    >
-                      Call Now
-                    </a>
-
-                    <a
-                      href={`https://wa.me/${donor.phone}`}
-                      target="_blank"
-                      className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-all"
-                    >
-                      WhatsApp
-                    </a>
-                  </div>
-
                 </div>
               </div>
             ))}
-
           </div>
         ) : (
           <p className="text-white text-center mt-8 text-xl">

@@ -11,11 +11,10 @@ export default function RegisterDonor() {
     email: "",
     city: "",
     pincode: "",
-    emergency: "",
-    lastDonation: "",
-    availability: "Available",
     medical: "",
   });
+
+  const [showSuccess, setShowSuccess] = useState(false); // ✅ Success message state
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,18 +23,17 @@ export default function RegisterDonor() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✅ Fetch existing donors from localStorage
     const storedDonors = JSON.parse(localStorage.getItem("donors")) || [];
-
-    // ✅ Add new donor data
     storedDonors.push(formData);
-
-    // ✅ Save updated list back to localStorage
     localStorage.setItem("donors", JSON.stringify(storedDonors));
 
-    alert("✅ Donor Registered Successfully!");
+    setShowSuccess(true); // ✅ show success message popup
+  };
 
-    // ✅ Reset form
+  const closePopup = () => {
+    setShowSuccess(false);
+
+    // ✅ Now reset the form ONLY when user closes popup
     setFormData({
       fullname: "",
       age: "",
@@ -46,15 +44,28 @@ export default function RegisterDonor() {
       email: "",
       city: "",
       pincode: "",
-      emergency: "",
-      lastDonation: "",
-      availability: "Available",
       medical: "",
     });
   };
 
   return (
     <div className="flex justify-center w-full min-h-[calc(100vh-70px)] bg-gradient-to-r from-red-700 to-red-500 pt-24 pb-12 px-6">
+
+      {/* ✅ Popup Success Message */}
+      {showSuccess && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black/40 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 text-center w-[350px]">
+            <h3 className="text-2xl font-bold text-red-600">✅ Registered Successfully!</h3>
+            <p className="mt-2 text-gray-700">Thank you for registering as a donor.</p>
+            <button
+              onClick={closePopup}
+              className="mt-6 bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition"
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      )}
 
       <form
         onSubmit={handleSubmit}
@@ -64,9 +75,7 @@ export default function RegisterDonor() {
           Register as Blood Donor
         </h2>
 
-        {/* GRID FORM FIELDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
           <input name="fullname" type="text" placeholder="Full Name"
             className="p-3 border rounded-xl" value={formData.fullname} onChange={handleChange} required />
 
@@ -99,26 +108,13 @@ export default function RegisterDonor() {
           <input name="email" type="email" placeholder="Email Address"
             className="p-3 border rounded-xl" value={formData.email} onChange={handleChange} />
 
-          <input name="emergency" type="tel" placeholder="Emergency Contact"
-            className="p-3 border rounded-xl" value={formData.emergency} onChange={handleChange} required />
-
           <input name="city" type="text" placeholder="City / Area"
             className="p-3 border rounded-xl" value={formData.city} onChange={handleChange} required />
 
           <input name="pincode" type="text" placeholder="Pincode"
             className="p-3 border rounded-xl" value={formData.pincode} onChange={handleChange} required />
-
-          <input name="lastDonation" type="date"
-            className="p-3 border rounded-xl" value={formData.lastDonation} onChange={handleChange} />
-
-          <select name="availability" className="p-3 border rounded-xl"
-            value={formData.availability} onChange={handleChange}>
-            <option value="Available">✅ Available to Donate</option>
-            <option value="Unavailable">⛔ Temporarily Unavailable</option>
-          </select>
         </div>
 
-        {/* MEDICAL CONDITIONS */}
         <textarea
           name="medical"
           placeholder="Any medical conditions or medications? (optional)"
@@ -127,7 +123,6 @@ export default function RegisterDonor() {
           onChange={handleChange}
         />
 
-        {/* SUBMIT BUTTON */}
         <button type="submit"
           className="w-full bg-red-600 text-white py-3 rounded-xl font-bold text-lg hover:bg-red-700 transition-all">
           Submit Registration
